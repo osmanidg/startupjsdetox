@@ -10,6 +10,8 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: macos-12
+    env:
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
@@ -26,6 +28,7 @@ jobs:
     - uses: JarvusInnovations/background-action@v1
       name: Run iOS simulator
       with:
+        wait-for: 1m
         run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
     - name: Install dependencies
       run: yarn
@@ -49,7 +52,6 @@ jobs:
       run: detox test --configuration ios.sim.debug
 #      env:
 #        CI: true
-#        PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
     - uses: actions/upload-artifact@v3
       if: failure()
       with:
