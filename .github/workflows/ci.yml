@@ -31,10 +31,6 @@ jobs:
 #        wait-for: 1m
 #        wait-on: xcrun simctl list devices booted | grep "iPhone 14"
 #        run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
-    - uses: futureware-tech/simulator-action@v2
-      name: Run Simulator
-      with:
-        model: 'iPhone 14'
     - name: Install dependencies
       run: yarn
     - name: Start MongoDB
@@ -51,6 +47,10 @@ jobs:
       with:
         start: yarn start, yarn metro
         wait-on: "http://localhost:3000"
+    - uses: futureware-tech/simulator-action@v2
+      name: Run Simulator
+      with:
+        model: 'iPhone 14'
     - name: Build with detox
       run: detox build --configuration ios.sim.debug
     - name: Run tests with detox
