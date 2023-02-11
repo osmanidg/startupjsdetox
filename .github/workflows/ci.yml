@@ -29,6 +29,7 @@ jobs:
       name: Run iOS simulator
       with:
         wait-for: 1m
+        wait-on: xcrun simctl list devices booted | grep "iPhone 14"
         run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
     - name: Install dependencies
       run: yarn
