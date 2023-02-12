@@ -45,16 +45,16 @@ jobs:
     - name: Background App Server
       uses: BerniWittmann/background-server-action@v1
       with:
-        start: yarn start, yarn metro
+        start: yarn start #, yarn metro
         wait-on: "http://localhost:3000"
     - uses: futureware-tech/simulator-action@v2
       name: Run Simulator
       with:
         model: 'iPhone 14'
     - name: Build with detox
-      run: detox build --configuration ios.sim.debug
+      run: detox build --configuration ios.sim.release
     - name: Run tests with detox
-      run: detox test --configuration ios.sim.debug
+      run: detox test --configuration ios.sim.release
 #      env:
 #        CI: true
     - uses: actions/upload-artifact@v3
