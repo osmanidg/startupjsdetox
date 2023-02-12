@@ -42,11 +42,11 @@ jobs:
       with:
         redis-version: '6'
     - run: cd ./ios && pod install && cd ..
-    - run: react-native start
+#    - run: react-native start
     - name: Background App Server
       uses: BerniWittmann/background-server-action@v1
       with:
-        start: yarn start
+        start: yarn metro, yarn start
         wait-on: "http://localhost:3000"
     - uses: futureware-tech/simulator-action@v2
       name: Run Simulator
@@ -55,9 +55,9 @@ jobs:
     - name: Open iOS simulator
       run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
     - name: Build with detox
-      run: detox build --configuration ios.sim.release
+      run: detox build --configuration ios.sim.debug
     - name: Run tests with detox
-      run: detox test --configuration ios.sim.release
+      run: detox test --configuration ios.sim.debug
 #      env:
 #        CI: true
     - uses: actions/upload-artifact@v3
