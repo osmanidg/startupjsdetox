@@ -42,6 +42,7 @@ jobs:
       with:
         redis-version: '6'
     - run: cd ./ios && pod install && cd ..
+    - run: react-native start
     - name: Background App Server
       uses: BerniWittmann/background-server-action@v1
       with:
@@ -52,9 +53,9 @@ jobs:
       with:
         model: 'iPhone 14'
     - name: Build with detox
-      run: detox build --configuration ios.sim.release
+      run: detox build --configuration ios.sim.debug
     - name: Run tests with detox
-      run: detox test --configuration ios.sim.release
+      run: detox test --configuration ios.sim.debug
 #      env:
 #        CI: true
     - uses: actions/upload-artifact@v3
