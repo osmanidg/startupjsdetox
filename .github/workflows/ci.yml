@@ -48,12 +48,12 @@ jobs:
       with:
         start: yarn metro, yarn start
         wait-on: "http://localhost:3000"
-    - uses: futureware-tech/simulator-action@v2
-      name: Run Simulator
-      with:
-        model: 'iPhone 14'
-    - name: Open iOS simulator
-      run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
+#    - uses: futureware-tech/simulator-action@v2
+#      name: Run Simulator
+#      with:
+#        model: 'iPhone 14'
+#    - name: Open iOS simulator
+#      run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
     - name: Build with detox
       run: detox build --configuration ios.sim.release
     - name: Run tests with detox
