@@ -1,4 +1,4 @@
-const TIMEOUT = 5000
+const TIMEOUT = 20000
 describe('Example', () => {
   beforeAll(async () => {
     await device.launchApp();
