@@ -19,7 +19,7 @@ jobs:
         node-version: 16
     - run: brew tap wix/brew
     - run: brew install applesimutils
-#    - run: npm install -g react-native-cli
+    - run: npm install -g react-native-cli
     - run: npm install -g detox-cli
 #    - name: Show simulator info
 #      run: applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/'
@@ -42,11 +42,11 @@ jobs:
       with:
         redis-version: '6'
     - run: cd ./ios && pod install && cd ..
-#    - run: react-native start
+    - run: react-native start
     - name: Background App Server
       uses: BerniWittmann/background-server-action@v1
       with:
-        start: yarn metro, yarn start
+        start: yarn start
         wait-on: "http://localhost:3000"
     - uses: futureware-tech/simulator-action@v2
       name: Run Simulator
