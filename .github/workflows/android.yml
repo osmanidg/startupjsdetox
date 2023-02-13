@@ -62,7 +62,6 @@ jobs:
       uses: shogo82148/actions-setup-redis@v1
       with:
         redis-version: '6'
-    - run: cd ./ios && pod install && cd ..
 #    - run: react-native start
 #    - name: Open iOS simulator
 #      run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
