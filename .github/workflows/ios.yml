@@ -65,7 +65,7 @@ jobs:
 #        start: yarn metro
 #        wait-on: "http://localhost:8081"
     - name: Run tests with detox
-      run: yarn start && detox test --configuration ios.sim.release --cleanup --debug-synchronization 200
+      run: yarn start & detox test --configuration ios.sim.release --cleanup --debug-synchronization 200
     - uses: actions/upload-artifact@v3
       if: failure()
       with:
