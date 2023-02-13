@@ -17,12 +17,10 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: 16
-    - name: Install detox dependencies
-      run: | 
-        brew tap wix/brew      
-        brew install applesimutils
-        npm install -g react-native-cli
-        npm install -g detox-cli
+    - run: brew tap wix/brew
+    - run: brew install applesimutils
+    - run: npm install -g react-native-cli
+    - run: npm install -g detox-cli
 #    - name: Show simulator info
 #      run: applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/'
 #    - name: Run iOS simulator
@@ -33,10 +31,10 @@ jobs:
 #        wait-for: 1m
 #        wait-on: xcrun simctl list devices booted | grep "iPhone 14"
 #        run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
-#    - uses: futureware-tech/simulator-action@v2
-#      name: Run Simulator
-#      with:
-#        model: 'iPhone 14'
+    - uses: futureware-tech/simulator-action@v2
+      name: Run Simulator
+      with:
+        model: 'iPhone 14'
     - name: Install dependencies
       run: yarn
     - run: cd ./ios && pod install && cd ..
@@ -53,19 +51,19 @@ jobs:
 #      run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
     - name: Build with detox
       run: detox build --configuration ios.sim.debug
-#    - name: Background App Server
-#      uses: BerniWittmann/background-server-action@v1
-#      with:
-#        start: yarn start
-#        wait-on: "http://localhost:3000"
-#        wait-on-timeout: 120
+    - name: Background App Server
+      uses: BerniWittmann/background-server-action@v1
+      with:
+        start: yarn start
+        wait-on: "http://localhost:3000"
+        wait-on-timeout: 120
     - name: Metro
       uses: BerniWittmann/background-server-action@v1
       with:
         start: yarn metro
         wait-on: "http://localhost:8081"
     - name: Run tests with detox
-      run: yarn start & detox test --configuration ios.sim.debug --cleanup --debug-synchronization 200
+      run: detox test --configuration ios.sim.debug --cleanup --debug-synchronization 200
     - uses: actions/upload-artifact@v3
       if: failure()
       with:
