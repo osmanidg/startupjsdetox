@@ -40,7 +40,7 @@ module.exports = {
     simulator: {
       type: 'ios.simulator',
       device: {
-        type: 'iPhone 14'
+        type: 'iPhone 8'
       }
     },
     attached: {
@@ -52,7 +52,7 @@ module.exports = {
     emulator: {
       type: 'android.emulator',
       device: {
-        avdName: 'Nexus 5X'
+        avdName: 'Pixel_3a_API_33_arm64-v8a'
       }
     }
   },
