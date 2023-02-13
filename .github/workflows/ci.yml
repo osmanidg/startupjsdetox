@@ -19,7 +19,7 @@ jobs:
         node-version: 16
     - run: brew tap wix/brew
     - run: brew install applesimutils
-    - run: npm install -g react-native-cli
+#    - run: npm install -g react-native-cli
     - run: npm install -g detox-cli
 #    - name: Show simulator info
 #      run: applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/'
@@ -52,8 +52,8 @@ jobs:
       name: Run Simulator
       with:
         model: 'iPhone 13'
-#    - name: Open iOS simulator
-#      run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
+    - name: Open iOS simulator
+      run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
     - name: Build with detox
       run: detox build --configuration ios.sim.release
     - name: Run tests with detox
