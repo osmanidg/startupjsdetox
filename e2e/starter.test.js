@@ -4,13 +4,13 @@ describe('Example', () => {
     await device.launchApp();
   });
 
-  // beforeEach(async () => {
-  //   await device.reloadReactNative();
-  // });
+  beforeEach(async () => {
+    await device.reloadReactNative();
+  });
 
   it('should click on counter', async () => {
-    const buttonPlus = element(by.id('buttonPlus'))
-    const buttonMinus = element(by.id('buttonMinus'))
+    const buttonPlus = await element(by.id('buttonPlus'))
+    const buttonMinus = await element(by.id('buttonMinus'))
     //const counter = element(by.id('counter'))
     await waitFor(buttonPlus).toBeVisible().withTimeout(TIMEOUT)
     await waitFor(buttonMinus).toBeVisible().withTimeout(TIMEOUT)
