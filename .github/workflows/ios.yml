@@ -1,0 +1,74 @@
+name: Tests
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  test:
+    timeout-minutes: 100
+    runs-on: macos-latest
+#    env:
+#      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - name: Install detox dependencies
+      run: | 
+        brew tap wix/brew      
+        brew install applesimutils
+        npm install -g detox-cli
+#        npm install -g react-native-cli
+#    - name: Show simulator info
+#      run: applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/'
+#    - name: Run iOS simulator
+#      run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
+#    - uses: JarvusInnovations/background-action@v1
+#      name: Run iOS simulator
+#      with:
+#        wait-for: 1m
+#        wait-on: xcrun simctl list devices booted | grep "iPhone 14"
+#        run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
+#    - uses: futureware-tech/simulator-action@v2
+#      name: Run Simulator
+#      with:
+#        model: 'iPhone 14'
+    - name: Install dependencies
+      run: yarn
+    - run: cd ./ios && pod install && cd ..
+    - name: Start MongoDB
+      uses: ankane/setup-mongodb@v1
+      with:
+        mongodb-version: '5.0'
+    - name: Start Redis
+      uses: shogo82148/actions-setup-redis@v1
+      with:
+        redis-version: '6'
+#    - run: react-native start
+#    - name: Open iOS simulator
+#      run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
+    - name: Build with detox
+      run: detox build --configuration ios.sim.release
+#    - name: Background App Server
+#      uses: BerniWittmann/background-server-action@v1
+#      with:
+#        start: yarn start
+#        wait-on: "http://localhost:3000"
+#        wait-on-timeout: 120
+#    - name: Metro
+#      uses: BerniWittmann/background-server-action@v1
+#      with:
+#        start: yarn metro
+#        wait-on: "http://localhost:8081"
+    - name: Run tests with detox
+      run: yarn start && detox test --configuration ios.sim.release --cleanup --debug-synchronization 200
+    - uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
