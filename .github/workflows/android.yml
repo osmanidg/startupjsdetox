@@ -1,4 +1,4 @@
-name: Tests
+name: Android
 on:
   push:
     branches:
@@ -21,8 +21,10 @@ jobs:
       run: | 
         brew tap wix/brew
         brew install applesimutils
+        brew tap homebrew/cask-versions
+        brew install --cask zulu11  
+        npm install -g react-native-cli
         npm install -g detox-cli
-#        npm install -g react-native-cli
 #    - name: Show simulator info
 #      run: applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/'
 #    - name: Run iOS simulator
@@ -39,19 +41,19 @@ jobs:
 #        model: 'iPhone 14'
     - name: Install dependencies
       run: yarn
-    - name: Install Java JDK
-      uses: joschi/setup-jdk@v1
-      with:
-        java-version: 'openjdk8'
-        architecture: 'x64'
-      env:
-        # https://github.com/actions/toolkit/issues/641#issuecomment-728963957
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
-#    - name: Download Android Emulator Image
-#      run: |
-#        echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-29;google_apis;x86"
-#        echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name emu --device "Nexus 5X" -k 'system-images;android-29;google_apis;x86'
-#        $ANDROID_HOME/emulator/emulator -list-avds
+#    - name: Install Java JDK
+#      uses: joschi/setup-jdk@v1
+#      with:
+#        java-version: 'openjdk8'
+#        architecture: 'x64'
+#      env:
+#        # https://github.com/actions/toolkit/issues/641#issuecomment-728963957
+#        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+    - name: Download Android Emulator Image
+      run: |
+        echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-29;google_apis;x86"
+        echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name emu --device "Nexus 5X" -k 'system-images;android-29;google_apis;x86'
+        $ANDROID_HOME/emulator/emulator -list-avds
     - name: Start MongoDB
       uses: ankane/setup-mongodb@v1
       with:
@@ -66,15 +68,15 @@ jobs:
 #      run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
     - name: Build with detox
       run: detox build -c android.emu.release
-#    - name: Android Emulator
-#      timeout-minutes: 10
-#      continue-on-error: true
-#      run: |
-#        echo "Starting emulator"
-#        nohup $ANDROID_HOME/emulator/emulator -avd emu -no-audio -no-snapshot -no-window &
-#        $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
-#        $ANDROID_HOME/platform-tools/adb devices
-#        echo "Emulator started"
+    - name: Android Emulator
+      timeout-minutes: 10
+      continue-on-error: true
+      run: |
+        echo "Starting emulator"
+        nohup $ANDROID_HOME/emulator/emulator -avd emu -no-audio -no-snapshot -no-window &
+        $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
+        $ANDROID_HOME/platform-tools/adb devices
+        echo "Emulator started"
 #    - name: Background App Server
 #      uses: BerniWittmann/background-server-action@v1
 #      with:

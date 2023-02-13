@@ -1,4 +1,4 @@
-name: Tests
+name: iOS
 on:
   push:
     branches:
@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     timeout-minutes: 100
-    runs-on: macos-latest
+    runs-on: macos-12
 #    env:
 #      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
     steps:
@@ -21,8 +21,8 @@ jobs:
       run: | 
         brew tap wix/brew      
         brew install applesimutils
+        npm install -g react-native-cli
         npm install -g detox-cli
-#        npm install -g react-native-cli
 #    - name: Show simulator info
 #      run: applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/'
 #    - name: Run iOS simulator
