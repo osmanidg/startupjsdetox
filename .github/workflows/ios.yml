@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     timeout-minutes: 100
-    runs-on: macos-12
+    runs-on: macos-latest
 #    env:
 #      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
     steps:
@@ -31,12 +31,10 @@ jobs:
 #        wait-for: 1m
 #        wait-on: xcrun simctl list devices booted | grep "iPhone 14"
 #        run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
-#    - uses: futureware-tech/simulator-action@v2
-#      name: Run Simulator
-#      with:
-#        model: 'iPhone 14'
     - name: Install dependencies
       run: yarn
+    - name: Build
+      run: yarn build
     - run: cd ./ios && pod install && cd ..
     - name: Start MongoDB
       uses: ankane/setup-mongodb@v1
@@ -49,12 +47,16 @@ jobs:
 #    - run: react-native start
 #    - name: Open iOS simulator
 #      run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
+    - uses: futureware-tech/simulator-action@v2
+      name: Run Simulator
+      with:
+        model: 'iPhone 14'
     - name: Build with detox
       run: detox build --configuration ios.sim.debug
     - name: Background App Server
       uses: BerniWittmann/background-server-action@v1
       with:
-        start: yarn start
+        start: yarn start-production
         wait-on: "http://localhost:3000"
         wait-on-timeout: 120
     - name: Metro
