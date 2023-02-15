@@ -71,8 +71,8 @@ jobs:
 #        key: ${{ runner.os }}-v2 # makes a unique key w/related restore key internally
 #        max-size: 1500M
 #
-#    - name: Install dependencies
-#      run: yarn --no-audit --prefer-offline
+    - name: Install dependencies
+      run: yarn --no-audit --prefer-offline
 
 #    - name: Install brew utilities
 #      uses: nick-invision/retry@v2
