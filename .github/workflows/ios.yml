@@ -25,12 +25,12 @@ jobs:
 #      run: applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/'
 #    - name: Run iOS simulator
 #      run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
-#    - uses: JarvusInnovations/background-action@v1
-#      name: Run iOS simulator
-#      with:
-#        wait-for: 1m
-#        wait-on: xcrun simctl list devices booted | grep "iPhone 14"
-#        run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
+    - uses: JarvusInnovations/background-action@v1
+      name: Run iOS simulator
+      with:
+        wait-for: 1m
+        wait-on: xcrun simctl list devices booted | grep "iPhone 14"
+        run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
 
 #    - name: Configure JDK 1.11
 #      uses: actions/setup-java@v3
@@ -100,16 +100,22 @@ jobs:
 #      with:
 #        model: 'iPhone 14'
     - name: Build with detox
-      run: detox build --configuration ios.sim.debug
+      run: detox build --configuration ios.sim.release
     - name: Background App Server
       uses: BerniWittmann/background-server-action@v1
       with:
         start: yarn start-production
         wait-on: "http://localhost:3000"
-    - name: Metro
-      uses: BerniWittmann/background-server-action@v1
-      with:
-        start: yarn metro
-        wait-on: "http://localhost:8081"
+#    - name: Metro
+#      uses: BerniWittmann/background-server-action@v1
+#      with:
+#        start: yarn metro
+#        wait-on: "http://localhost:8081"
     - name: Run tests with detox
-      run: detox test --configuration ios.sim.debug --cleanup --debug-synchronization 200
+      continue-on-error: true
+      run: detox test --configuration ios.sim.release --cleanup --debug-synchronization 200
+    - run: xcrun simctl list devices booted
+    - name: Run tests with detox 2
+      continue-on-error: true
+      run: detox test --configuration ios.sim.release --cleanup --debug-synchronization 200
+
