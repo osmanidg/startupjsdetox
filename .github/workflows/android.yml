@@ -27,11 +27,11 @@ jobs:
 #      run: |
 #        brew tap homebrew/cask-versions
 #        brew install --cask zulu11
-    - name: Java Setup
-      uses: actions/setup-java@v3.9.0
-      with:
-        distribution: 'temurin'
-        java-version: '11'
+#    - name: Java Setup
+#      uses: actions/setup-java@v3.9.0
+#      with:
+#        distribution: 'temurin'
+#        java-version: '11'
 #    - name: Build with Gradle
 #      run: ./gradlew build
 #    - name: Show simulator info
