@@ -23,14 +23,14 @@ jobs:
     - run: npm install -g detox-cli
 #    - name: Show simulator info
 #      run: applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/'
-#    - name: Run iOS simulator
-#      run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
-    - uses: JarvusInnovations/background-action@v1
-      name: Run iOS simulator
-      with:
-        wait-for: 1m
-        wait-on: xcrun simctl list devices booted | grep "iPhone 14"
-        run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
+    - name: Run iOS simulator
+      run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
+#    - uses: JarvusInnovations/background-action@v1
+#      name: Run iOS simulator
+#      with:
+#        wait-for: 1m
+#        wait-on: xcrun simctl list devices booted | grep "iPhone 14"
+#        run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
 
 #    - name: Configure JDK 1.11
 #      uses: actions/setup-java@v3

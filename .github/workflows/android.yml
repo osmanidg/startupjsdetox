@@ -32,8 +32,8 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '11'
-    - name: Build with Gradle
-      run: ./gradlew build
+#    - name: Build with Gradle
+#      run: ./gradlew build
 #    - name: Show simulator info
 #      run: applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/'
 #    - name: Run iOS simulator
