@@ -47,10 +47,10 @@ jobs:
 #    - run: react-native start
 #    - name: Open iOS simulator
 #      run: open -a /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app --args -CurrentDeviceUDID $(applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/')
-    - uses: futureware-tech/simulator-action@v2
-      name: Run Simulator
-      with:
-        model: 'iPhone 14'
+#    - uses: futureware-tech/simulator-action@v2
+#      name: Run Simulator
+#      with:
+#        model: 'iPhone 14'
     - name: Build with detox
       run: detox build --configuration ios.sim.debug
     - name: Background App Server
