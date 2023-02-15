@@ -17,14 +17,20 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: 16
-    - name: Install detox dependecies
+    - name: Install detox dependencies
       run: | 
         brew tap wix/brew
         brew install applesimutils
-        brew tap homebrew/cask-versions
-        brew install --cask zulu11          
-        npm install -g react-native-cli
+        npm install -g react-native-cli @react-native-community/cli
         npm install -g detox-cli
+    - name: Install java
+      run: |        
+        brew tap homebrew/cask-versions
+        brew install --cask zulu11
+    - name: Java Setup
+      uses: actions/setup-java@v3.9.0
+    - name: Build with Gradle
+      run: ./gradlew build
 #    - name: Show simulator info
 #      run: applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/'
 #    - name: Run iOS simulator
