@@ -21,8 +21,7 @@ jobs:
       run: | 
         brew tap wix/brew
         brew install applesimutils
-        brew tap homebrew/cask-versions
-        brew install --cask zulu11  
+        brew tap homebrew/cask-versions          
         npm install -g react-native-cli
         npm install -g detox-cli
 #    - name: Show simulator info
@@ -41,6 +40,11 @@ jobs:
 #        model: 'iPhone 14'
     - name: Install dependencies
       run: yarn
+    - name: Configure JDK 1.11
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '11'
 #    - name: Install Java JDK
 #      uses: joschi/setup-jdk@v1
 #      with:
@@ -62,7 +66,7 @@ jobs:
       uses: shogo82148/actions-setup-redis@v1
       with:
         redis-version: '6'
-    - run: export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home
+#    - run: export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home
     - name: Build with detox
       run: detox build -c android.emu.release
     - name: Android Emulator
