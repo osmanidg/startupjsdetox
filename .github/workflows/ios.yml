@@ -17,9 +17,9 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: 16
-#    - run: brew tap wix/brew
-#    - run: brew install applesimutils
-#    - run: npm install -g react-native-cli
+    - run: brew tap wix/brew
+    - run: brew install applesimutils
+    - run: npm install -g react-native-cli
     - run: npm install -g detox-cli
 #    - name: Show simulator info
 #      run: applesimutils --byName "iPhone 14" --list | grep 'udid' | sed 's/.*:.*\"\(.*\)\",/\1/'
@@ -46,48 +46,48 @@ jobs:
       with:
         fetch-depth: 50
 
-    # Set path variables needed for caches
-    - name: Set workflow variables
-      id: workflow-variables
-      run: |
-        echo "metro-cache=$HOME/.metro" >> $GITHUB_OUTPUT
-        echo "xcode-version=$(xcodebuild -version|tail -1|cut -f3 -d' ')" >> $GITHUB_OUTPUT
-        echo "yarn-cache-dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-    - uses: actions/cache@v3
-      name: Yarn Cache
-      id: yarn-cache
-      with:
-        path: ${{ steps.workflow-variables.outputs.yarn-cache-dir }}
-        key: ${{ runner.os }}-yarn-v1-${{ hashFiles('yarn.lock') }}
-        restore-keys: ${{ runner.os }}-yarn-v1
+#    # Set path variables needed for caches
+#    - name: Set workflow variables
+#      id: workflow-variables
+#      run: |
+#        echo "metro-cache=$HOME/.metro" >> $GITHUB_OUTPUT
+#        echo "xcode-version=$(xcodebuild -version|tail -1|cut -f3 -d' ')" >> $GITHUB_OUTPUT
+#        echo "yarn-cache-dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+#    - uses: actions/cache@v3
+#      name: Yarn Cache
+#      id: yarn-cache
+#      with:
+#        path: ${{ steps.workflow-variables.outputs.yarn-cache-dir }}
+#        key: ${{ runner.os }}-yarn-v1-${{ hashFiles('yarn.lock') }}
+#        restore-keys: ${{ runner.os }}-yarn-v1
+#
+#    - uses: actions/cache@v3
+#      name: Detox Framework Cache
+#      id: detox-cache
+#      with:
+#        path: ~/Library/Detox/ios
+#        key: ${{ runner.os }}-detox-framework-cache-${{ steps.workflow-variables.outputs.xcode-version }}
+#
+#    # Detox is compiled during yarn install, using Xcode, set up cache first
+#    - uses: hendrikmuhs/ccache-action@v1.2
+#      name: Xcode Compile Cache
+#      with:
+#        key: ${{ runner.os }}-v2 # makes a unique key w/related restore key internally
+#        max-size: 1500M
+#
+#    - name: Install dependencies
+#      run: yarn --no-audit --prefer-offline
 
-    - uses: actions/cache@v3
-      name: Detox Framework Cache
-      id: detox-cache
-      with:
-        path: ~/Library/Detox/ios
-        key: ${{ runner.os }}-detox-framework-cache-${{ steps.workflow-variables.outputs.xcode-version }}
-
-    # Detox is compiled during yarn install, using Xcode, set up cache first
-    - uses: hendrikmuhs/ccache-action@v1.2
-      name: Xcode Compile Cache
-      with:
-        key: ${{ runner.os }}-v2 # makes a unique key w/related restore key internally
-        max-size: 1500M
-
-    - name: Install dependencies
-      run: yarn --no-audit --prefer-offline
-
-    - name: Install brew utilities
-      uses: nick-invision/retry@v2
-      with:
-        timeout_minutes: 5
-        retry_wait_seconds: 60
-        max_attempts: 3
-        command: HOMEBREW_NO_AUTO_UPDATE=1 brew tap wix/brew && HOMEBREW_NO_AUTO_UPDATE=1 brew install applesimutils xcbeautify && applesimutils --list
+#    - name: Install brew utilities
+#      uses: nick-invision/retry@v2
+#      with:
+#        timeout_minutes: 5
+#        retry_wait_seconds: 60
+#        max_attempts: 3
+#        command: HOMEBREW_NO_AUTO_UPDATE=1 brew tap wix/brew && HOMEBREW_NO_AUTO_UPDATE=1 brew install applesimutils xcbeautify && applesimutils --list
+    - run: cd ./ios && pod install && cd ..
     - name: Build
       run: yarn build
-    - run: cd ./ios && pod install && cd ..
     - name: Start MongoDB
       uses: ankane/setup-mongodb@v1
       with:
@@ -110,7 +110,6 @@ jobs:
       with:
         start: yarn start-production
         wait-on: "http://localhost:3000"
-        wait-on-timeout: 120
     - name: Metro
       uses: BerniWittmann/background-server-action@v1
       with:

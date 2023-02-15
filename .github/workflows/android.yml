@@ -21,7 +21,8 @@ jobs:
       run: | 
         brew tap wix/brew
         brew install applesimutils
-        brew tap homebrew/cask-versions          
+        brew tap homebrew/cask-versions
+        brew install --cask zulu11          
         npm install -g react-native-cli
         npm install -g detox-cli
 #    - name: Show simulator info
@@ -40,11 +41,11 @@ jobs:
 #        model: 'iPhone 14'
     - name: Install dependencies
       run: yarn
-    - name: Configure JDK 1.11
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'temurin'
-        java-version: '11'
+#    - name: Configure JDK 1.11
+#      uses: actions/setup-java@v3
+#      with:
+#        distribution: 'temurin'
+#        java-version: '11'
 #    - name: Install Java JDK
 #      uses: joschi/setup-jdk@v1
 #      with:
@@ -78,16 +79,16 @@ jobs:
         $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
         $ANDROID_HOME/platform-tools/adb devices
         echo "Emulator started"
-#    - name: Background App Server
-#      uses: BerniWittmann/background-server-action@v1
-#      with:
-#        start: yarn start
-#        wait-on: "http://localhost:3000"
-#        wait-on-timeout: 120
+    - name: Background App Server
+      uses: BerniWittmann/background-server-action@v1
+      with:
+        start: yarn start
+        wait-on: "http://localhost:3000"
 #    - name: Metro
 #      uses: BerniWittmann/background-server-action@v1
 #      with:
 #        start: yarn metro
 #        wait-on: "http://localhost:8081"
+# emulator @Nexus_5X & until adb shell true; do sleep .5; done &&
     - name: Run tests with detox
       run: bash ${{ github.workspace }}/run-e2e-android-release.sh
