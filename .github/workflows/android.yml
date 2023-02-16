@@ -23,10 +23,10 @@ jobs:
         brew install applesimutils
         npm install -g react-native-cli
         npm install -g detox-cli
-#    - name: Install java
-#      run: |
-#        brew tap homebrew/cask-versions
-#        brew install --cask zulu11
+    - name: Install java
+      run: |
+        brew tap homebrew/cask-versions
+        brew install --cask zulu11
 #    - name: Java Setup
 #      uses: actions/setup-java@v3.9.0
 #      with:
@@ -48,14 +48,14 @@ jobs:
 #        distribution: 'temurin'
 #        java-version: '11'
 
-    - name: Install Java JDK
-      uses: joschi/setup-jdk@v1
-      with:
-        java-version: 11 #'openjdk11'
-        architecture: 'x64'
-      env:
-        # https://github.com/actions/toolkit/issues/641#issuecomment-728963957
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+#    - name: Install Java JDK
+#      uses: joschi/setup-jdk@v1
+#      with:
+#        java-version: 11 #'openjdk11'
+#        architecture: 'x64'
+#      env:
+#        # https://github.com/actions/toolkit/issues/641#issuecomment-728963957
+#        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
     - name: Download Android Emulator Image
       run: |
         echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-29;google_apis;x86"
